@@ -46,6 +46,10 @@ else
     CMD_CONFIG="${CMD_CONFIG} --backend-frontname=${BACKEND_FRONTNAME}"
   fi
 
+  if [[ -n "${SESSION_SAVE}" ]]; then
+    CMD_CONFIG="${CMD_CONFIG} --session-save=${SESSION_SAVE}"
+  fi
+
   # Set the install command
   CMD_INSTALL="${CMD_MAGENTO} setup:install --base-url="${URI}" \
                 --admin-firstname="${ADMIN_FIRSTNAME}" \
