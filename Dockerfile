@@ -1,7 +1,7 @@
 # Base image is PHP 7.2 running Apache
 
 # FIX We want to build magento with PHP 7.2
-FROM php:7.2-apache
+FROM php:7.3-apache
 
 LABEL company="Sensson"
 LABEL maintainer="info@sensson.net"
@@ -9,7 +9,7 @@ LABEL maintainer="info@sensson.net"
 # FIX We have to fix Mcrypt
 # FIX https://stackoverflow.com/questions/47671108/docker-php-ext-install-mcrypt-missing-folder
 RUN apt-get update && apt-get install -y libmcrypt-dev \
-    && pecl install mcrypt-1.0.2 \
+    && pecl install mcrypt-1.0.3 \
     && docker-php-ext-enable mcrypt
 
 # Install Magento 2 dependencies
@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
         libxml2-dev \
         libxslt1-dev \
         libicu-dev \
+        libzip-dev \
         # FIX COMMENTED # mysql-client \
         default-mysql-client \
         xmlstarlet \
@@ -61,9 +62,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 RUN cd /tmp \
     && curl -o ioncube.tar.gz http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
     && tar -xvzf ioncube.tar.gz \
-    && mv ioncube/ioncube_loader_lin_7.2.so /usr/local/lib/php/extensions/* \
+    && mv ioncube/ioncube_loader_lin_7.3.so /usr/local/lib/php/extensions/* \
     && rm -Rf ioncube.tar.gz ioncube \
-    && echo "zend_extension=ioncube_loader_lin_7.2.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_7.2.ini
+    && echo "zend_extension=ioncube_loader_lin_7.3.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_7.3.ini
 
 # Set up the application
 COPY src /var/www/html/
