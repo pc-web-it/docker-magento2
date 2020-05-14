@@ -51,6 +51,7 @@ else
   fi
 
   # Set the install command
+  # See https://devdocs.magento.com/guides/v2.3/install-gde/install/cli/install-cli-install.html#instgde-cli-help-cmds
   CMD_INSTALL="${CMD_MAGENTO} setup:install --base-url="${URI}" \
                 --admin-firstname="${ADMIN_FIRSTNAME}" \
                 --admin-lastname="${ADMIN_LASTNAME}" \
@@ -58,6 +59,7 @@ else
                 --admin-user="${ADMIN_USERNAME}" \
                 --admin-password="${ADMIN_PASSWORD}" --language="${LANGUAGE}" \
                 --currency="${CURRENCY}" --timezone="${TIMEZONE}" \
+                --session-save="${SESSION_SAVE:-db}" \
                 --use-rewrites=1"
 
   # Run configuration command
