@@ -66,6 +66,17 @@ RUN cd /tmp \
     && rm -Rf ioncube.tar.gz ioncube \
     && echo "zend_extension=ioncube_loader_lin_7.3.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_7.3.ini
 
+# Install Apache Security Module
+RUN apt-get update && apt install libapache2-mod-security2 -y \
+    && a2enmod security2 \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN sed -i \
+    -e 's/Options Indexes FollowSymLinks/Options FollowSymLinks/' \
+    -e 's/ServerTokens OS/ServerTokens Prod/' \
+    -e 's/ServerSignature On/ServerSignature Off/' \
+    /etc/apache2/conf-enabled/security.conf
+
 # Set up the application
 COPY src /var/www/html/
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
